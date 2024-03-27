@@ -7,11 +7,11 @@ import { FavoriteMovies } from './favorite-movies';
 import { UpdateUser } from "./update-user";
 
 export const ProfileView = ({localUser, movies, token}) => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    const [username, setUsername]= useState(storedUser.username);
-    const [email, setEmail] = useState(storedUser.email);
-    const [password, setPassword]= useState(storedUser.password);
-    const [birthday, setBirthday] = useState(storedUser.birthday);
+    const storedUser = JSON.parse(localStorage.getItem("user")) || {};
+    const [username, setUsername]= useState(storedUser.username || "");
+    const [email, setEmail] = useState(storedUser.email || "");
+    const [password, setPassword]= useState(storedUser.password || "");
+    const [birthday, setBirthday] = useState(storedUser.birthday || "");
     const [user, setUser]= useState();
     const favoriteMovies = user === undefined || user.favoriteMovies === undefined
     ? [] 
@@ -127,7 +127,7 @@ export const ProfileView = ({localUser, movies, token}) => {
                 <Card.Title>My Profile  </Card.Title>
                     <Card.Text>
                         {
-                            user && (<UserInfo name ={user.username} email={user.email} />)
+                            user && (<UserInfo name ={userData.username} email={userData.email} />)
                         }
                     </Card.Text>              
             </Card.Body>            
