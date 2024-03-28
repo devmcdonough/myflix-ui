@@ -21,7 +21,7 @@ export const MovieCard = ({ movie, isFavorite }) => {
 
         const addToFavorites = () => {
             fetch(
-                `https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.username}/movies/${encodeURIComponent(movie.title)}`,
+                `https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.username}/movies/${encodeURIComponent(movie.id)}`,
                 {
                     method: "POST",
                     headers: {
@@ -35,7 +35,7 @@ export const MovieCard = ({ movie, isFavorite }) => {
                         throw Error("Failed to add to favorites");
                     }
                 alert("Movie added to favorites!");
-                window.location.reload();
+                setAddTitle("");
                 return response.json();
                 })
                 .then((user) => {
@@ -51,7 +51,7 @@ export const MovieCard = ({ movie, isFavorite }) => {
 
         const removeFromFavorites = () => {
             fetch(
-                `https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.username}/movies/${encodeURIComponent(movie.title)}`,
+                `https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.username}/movies/${encodeURIComponent(movie.id)}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -65,7 +65,7 @@ export const MovieCard = ({ movie, isFavorite }) => {
                         throw Error("Could not remove movie");
                     }
                     alert("Movie removed from favorites");
-                    window.location.reload();
+                    setRemoveTitle("");
                     return response.json();
                     })
                     .then((user) => {
@@ -87,10 +87,10 @@ export const MovieCard = ({ movie, isFavorite }) => {
                 }, [addTitle, removeTitle, token]);
 
                 const handleAddToFavorites = () => {
-                    setAddTitle(movie.title);
+                    setAddTitle(movie.id);
                 };
                 const handleRemoveFromFavorites = () => {
-                    setRemoveTitle(movie.title);
+                    setRemoveTitle(movie.id);
                 };
 
     return (

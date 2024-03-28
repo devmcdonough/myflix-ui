@@ -108,11 +108,9 @@ export const ProfileView = ({localUser, movies, token}) => {
               favoriteMovies: resultUser.favoriteMovies
             };
           });
-          setUser(usersFromApi.find((u) => u.username === localUser.username));
-        //   localStorage.setItem('user', JSON.stringify(user));
-          console.log("Profile Saved User: " + JSON.stringify(user));
-        //   console.log("User Result Data: " + storedUser.username );
-        //   storedUser = user;
+          const foundUser = usersFromApi.find((u) => u.username === localUser.username);
+          setUser(foundUser);
+          console.log("Profile Saved User: ", foundUser);
         })
         .catch((error) => {
             console.error(error);
