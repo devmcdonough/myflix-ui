@@ -12,20 +12,21 @@ export const ProfileView = ({localUser, movies, token}) => {
     const [email, setEmail] = useState(storedUser.email || "");
     const [password, setPassword]= useState(storedUser.password || "");
     const [birthday, setBirthday] = useState(storedUser.birthday || "");
-    const [user, setUser]= useState();
-    const favoriteMovies = user === undefined || user.favoriteMovies === undefined
-    ? [] 
-    : movies.filter(m => user.favoriteMovies.includes(m.title))
+    const [user, setUser]= useState({ favoriteMovies: [] });
+    const favoriteMovies = user && Array.isArray(user.favoriteMovies)
+  ? movies.filter((m) => user.favoriteMovies.includes(m.title))
+  : [];
+
 
     const userData = {
-        username: username,
-        email: email,
-        birthday: birthday,
-        password: password
+        Username: username,
+        Email: email,
+        Birthday: birthday,
+        Password: password
       };
       const handleSubmit = (event) => {
         event.preventDefault(event);
-        fetch(`https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.username}`, {
+        fetch(`https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.Username}`, {
             method: "PUT",
             body:JSON.stringify(userData),
             headers: {
@@ -71,7 +72,7 @@ export const ProfileView = ({localUser, movies, token}) => {
       }
 
       const handleDeregister = () => {
-        fetch (`https://mymovielibrary-905482f59fde.herokuapp.com/users/${storedUser.username}`, {
+        fetch (`https://mymovielibrary-905482f59fde.herokuapp.com/users/${storedUser.Username}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"
@@ -92,29 +93,15 @@ export const ProfileView = ({localUser, movies, token}) => {
           return;
         }
     
-        fetch("https://mymovielibrary-905482f59fde.herokuapp.com/users", {
+        fetch(`https://mymovielibrary-905482f59fde.herokuapp.com/users/${storedUser.Username}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log("Users data: ", data);
-            const usersFromApi = data.map((resultUser) => {
-            return {
-              id: resultUser._id,
-              username: resultUser.username,
-              password: resultUser.password,
-              email: resultUser.email,
-              birthday: resultUser.birthday,
-              favoriteMovies: resultUser.favoriteMovies
-            };
-          });
-          const foundUser = usersFromApi.find((u) => u.username === localUser.username);
-          setUser(foundUser);
-          console.log("Profile Saved User: ", foundUser);
+          console.log("Current user data", data);
+           setUser(data);
         })
-        .catch((error) => {
-            console.error(error);
-          });
+        .catch(error => console.error(error))
     }, [token]);
 
   return (
@@ -123,11 +110,9 @@ export const ProfileView = ({localUser, movies, token}) => {
         <Card className="mb-5">
             <Card.Body>
                 <Card.Title>My Profile  </Card.Title>
-                    <Card.Text>
                         {
-                            user && (<UserInfo name ={userData.username} email={userData.email} />)
+                            user && (<UserInfo name ={userData.Username} email={userData.email} />)
                         }
-                    </Card.Text>              
             </Card.Body>            
         </Card>
         <Card className="mb-5"> 

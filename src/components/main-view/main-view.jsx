@@ -121,7 +121,12 @@ return (
                   <>
                     {movies.map((movie) => (
                       <Col className="mb-4" key={movie.id} md={3}>
-                        <MovieCard movie={movie} />
+                        <MovieCard 
+                        movie={movie} 
+                        user={user} 
+                        setUser={setUser} 
+                        token={token}
+                        isFavorite={user && user.FavoriteMovies.includes(movie.id)}  />
                       </Col>
                     ))}
                   </>

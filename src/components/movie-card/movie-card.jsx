@@ -5,23 +5,28 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 
 
-export const MovieCard = ({ movie, isFavorite }) => {
+export const MovieCard = ({ movie, isFavorite, user, setUser }) => {
 
     const storedToken = localStorage.getItem("token");
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    const [user, setUser] = useState(storedUser? storedUser: null);
     const [token, setToken] = useState(storedToken ? storedToken : null);
     const [addTitle, setAddTitle] = useState("");
     const [removeTitle, setRemoveTitle] = useState("");
 
+
     useEffect(() => {
         if (!user || !token) {
             return;
-        }    
+        }   
+                }, [addTitle, removeTitle, token]);
 
         const addToFavorites = () => {
+            console.log("Before adding to favorites:", { isFavorite, favoriteMovies: user.favoriteMovies });
+
+            const username = user.username;
+            console.log('User in MovieCard:', user);
+
             fetch(
-                `https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.username}/movies/${encodeURIComponent(movie.id)}`,
+                `https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.Username}/movies/${encodeURIComponent(movie.id)}`,
                 {
                     method: "POST",
                     headers: {
@@ -38,11 +43,14 @@ export const MovieCard = ({ movie, isFavorite }) => {
                 setAddTitle("");
                 return response.json();
                 })
-                .then((user) => {
-                    if (user) {
-                        localStorage.setItem("user", JSON.stringify(user));
-                        setUser(user);
+                .then((updatedUser) => {
+                    if (updatedUser) {
+                        localStorage.setItem("user", JSON.stringify(updatedUser));
+                        setUser(updatedUser);
+                        console.log("After adding to favorites:", { isFavorite, favoriteMovies: user.favoriteMovies });
+
                     }
+                
                 })
                 .catch((error) => {
                     console.error(error);
@@ -51,7 +59,7 @@ export const MovieCard = ({ movie, isFavorite }) => {
 
         const removeFromFavorites = () => {
             fetch(
-                `https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.username}/movies/${encodeURIComponent(movie.id)}`,
+                `https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.Username}/movies/${encodeURIComponent(movie.id)}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -68,10 +76,10 @@ export const MovieCard = ({ movie, isFavorite }) => {
                     setRemoveTitle("");
                     return response.json();
                     })
-                    .then((user) => {
-                        if (user) {
-                            localStorage.setItem("user", JSON.stringify(user));
-                            setUser(user);
+                    .then((updatedUser) => {
+                        if (updatedUser) {
+                            localStorage.setItem("user", JSON.stringify(updatedUser));
+                            setUser(updatedUser);
                         }
                     })
                     .catch((error) => {
@@ -84,14 +92,17 @@ export const MovieCard = ({ movie, isFavorite }) => {
                     if (removeTitle) {
                         removeFromFavorites();
                     }
-                }, [addTitle, removeTitle, token]);
 
                 const handleAddToFavorites = () => {
+                    console.log(`Adding ${movie.id} to favorites`)
                     setAddTitle(movie.id);
                 };
+                
                 const handleRemoveFromFavorites = () => {
+                    console.log(`Removing ${movie.id} from favorites`)
                     setRemoveTitle(movie.id);
                 };
+                console.log("Rendering MovieCard", { user, isFavorite, movieId: movie.id });
 
     return (
        <Card>
@@ -105,11 +116,11 @@ export const MovieCard = ({ movie, isFavorite }) => {
                 </Button>
             </Link>
             {isFavorite ? (
-            <Button variant="primary" onClick={handleRemoveFromFavorites}>
+            <Button variant="primary" onClick={removeFromFavorites}>
             Remove from Favorites
         </Button>
             ) : (
-            <Button variant="primary" onClick={handleAddToFavorites}>
+            <Button variant="primary" onClick={addToFavorites}>
             Add to Favorites
         </Button>
 )}
@@ -130,6 +141,7 @@ MovieCard.propTypes = {
         imagepath: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
     }),
-    onToggleFavorite: PropTypes.func,
     isFavorite: PropTypes.bool,
+    user: PropTypes.object, 
+    setUser: PropTypes.func.isRequired,
 };
