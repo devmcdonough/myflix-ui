@@ -12,17 +12,17 @@ export const ProfileView = ({localUser, movies, token}) => {
     const [email, setEmail] = useState(storedUser.email || "");
     const [password, setPassword]= useState(storedUser.password || "");
     const [birthday, setBirthday] = useState(storedUser.birthday || "");
-    const [user, setUser]= useState({ favoriteMovies: [] });
-    const favoriteMovies = user && Array.isArray(user.favoriteMovies)
-  ? movies.filter((m) => user.favoriteMovies.includes(m.title))
+    const [user, setUser]= useState({ FavoriteMovies: [] });
+    const FavoriteMovies = user && Array.isArray(user.FavoriteMovies)
+  ? movies.filter((m) => user.FavoriteMovies.includes(m.title))
   : [];
-
 
     const userData = {
         Username: username,
         Email: email,
         Birthday: birthday,
-        Password: password
+        Password: password,
+        FavoriteMovies: user.FavoriteMovies
       };
       const handleSubmit = (event) => {
         event.preventDefault(event);
@@ -129,7 +129,7 @@ export const ProfileView = ({localUser, movies, token}) => {
     <Row>
         <Col className="mb-5" xs={12} md={12}>
             {
-                favoriteMovies && (<FavoriteMovies user={user} favoriteMovies={favoriteMovies} />)
+                FavoriteMovies && (<FavoriteMovies user={user} FavoriteMovies={FavoriteMovies} />)
             }
         </Col>
       </Row>

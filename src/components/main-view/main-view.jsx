@@ -12,16 +12,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 export const MainView = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
+    const storedToken = localStorage.getItem("token");
     const [movies, setMovies] = useState([]);
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null);
-
-    useEffect(() => {
-      const storedToken = localStorage.getItem("token");
-      if (storedToken && !token) {
-        setToken(storedToken); // Set token state if not already set
-      }
-    }, [token]);
+    const [user, setUser] = useState(storedUser ? storedUser : null);
+    const [token, setToken] = useState(storedToken ? storedToken : null);
 
     useEffect(() => {
       if (!token) {
@@ -126,7 +120,7 @@ return (
                         user={user} 
                         setUser={setUser} 
                         token={token}
-                        isFavorite={user && user.FavoriteMovies.includes(movie.id)}  />
+                        isFavorite={user.FavoriteMovies && user.FavoriteMovies.includes(movie.id)}  />
                       </Col>
                     ))}
                   </>

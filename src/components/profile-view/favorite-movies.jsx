@@ -14,7 +14,7 @@ export const FavoriteMovies = ({ user, favoriteMovies }) => {
              </Col>
              <Row>
                  {favoriteMovies.map((movie) => {
-                  const isFavorite = user && Array.isArray(user.favoriteMovies) && user.favoriteMovies.includes(movie.id);
+                   const isFavorite = user?.FavoriteMovies?.includes(movie.id) ?? false;
 
                    return (
                      <Col  className="mb-5" key={movie.id} md={4}>
@@ -31,3 +31,5 @@ export const FavoriteMovies = ({ user, favoriteMovies }) => {
             
            )
          }
+
+  export default FavoriteMovies
