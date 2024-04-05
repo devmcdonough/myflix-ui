@@ -11,11 +11,31 @@ export const ProfileView = ({localUser, movies, token}) => {
     const [username, setUsername]= useState(storedUser.username || "");
     const [email, setEmail] = useState(storedUser.email || "");
     const [password, setPassword]= useState(storedUser.password || "");
+    const [movies, setMovies] = useState([]);
     const [birthday, setBirthday] = useState(storedUser.birthday || "");
     const [user, setUser]= useState({ FavoriteMovies: [] });
+    const [isMoviesLoading, setIsMoviesLoading] = useState(true);
     const FavoriteMovies = user && Array.isArray(user.FavoriteMovies)
   ? movies.filter((m) => user.FavoriteMovies.includes(m.title))
   : [];
+
+  useEffect(() => {
+    // Simulate fetching movies data
+    const fetchMovies = async () => {
+      setIsMoviesLoading(true); // Start loading
+      try {
+        const response = await fetch('https://mymovielibrary-905482f59fde.herokuapp.com/movies/');
+        const data = await response.json();
+        setMovies(data); // Assume you have a setState action for movies
+        setIsMoviesLoading(false); // Loading is done
+      } catch (error) {
+        console.error("Failed to fetch movies:", error);
+        setIsMoviesLoading(false); // Ensure loading is set to false even if there's an error
+      }
+    };
+  
+    fetchMovies();
+  }, []);
 
     const userData = {
         Username: username,
@@ -26,6 +46,7 @@ export const ProfileView = ({localUser, movies, token}) => {
       };
 
       const favoriteMoviesList = movies.filter(movie => user.FavoriteMovies.includes(movie._id));
+      console.log(favoriteMoviesList);
 
     useEffect(() => {
         // Fetch user data and update state
@@ -113,6 +134,10 @@ export const ProfileView = ({localUser, movies, token}) => {
 
   return (
     <Container className="mx-1">
+      {isMoviesLoading ? (
+      <div>Loading movies...</div> // Display loading indicator when movies are being fetched
+    ) : (
+      <>
     <Row>
         <Card className="mb-5">
             <Card.Body>
@@ -134,7 +159,8 @@ export const ProfileView = ({localUser, movies, token}) => {
            </Card>      
     </Row>
     <FavoriteMoviesComponent user={user} FavoriteMovies={favoriteMoviesList} />
-
+</>
+    )}
       </Container>
   )
 }
