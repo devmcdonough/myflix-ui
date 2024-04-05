@@ -5,7 +5,8 @@ import './profile-view.scss'
 import { MovieCard } from "../movie-card/movie-card";
 
 
-export const FavoriteMovies = ({ user, favoriteMovies }) => {
+export const FavoriteMoviesComponent = ({ user, FavoriteMovies }) => {
+  console.log(user.FavoriteMovies);
  
     return ( 
             <Row>
@@ -13,15 +14,12 @@ export const FavoriteMovies = ({ user, favoriteMovies }) => {
                  <h3>My Movies</h3>
              </Col>
              <Row>
-                 {favoriteMovies.map((movie) => {
-                   const isFavorite = user?.FavoriteMovies?.includes(movie.id) ?? false;
-
+                 {FavoriteMovies.map((movie) => {
+                   console.log(FavoriteMovies);
                    return (
                      <Col  className="mb-5" key={movie.id} md={4}>
-                       <Link to={`/movies/${movie.id}`} />
+                       <Link to={`/movies/${movie.id}`}>Open</Link>
                        <MovieCard
-                         movie={movie}
-                         isFavorite={isFavorite}
                        />
                      </Col>
                    );
@@ -32,4 +30,4 @@ export const FavoriteMovies = ({ user, favoriteMovies }) => {
            )
          }
 
-  export default FavoriteMovies
+  export default FavoriteMoviesComponent;

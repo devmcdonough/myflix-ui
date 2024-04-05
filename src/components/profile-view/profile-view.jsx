@@ -3,7 +3,7 @@ import { UserInfo } from './user-info'
 import { Button, Card, Container} from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { FavoriteMovies } from './favorite-movies';
+import FavoriteMoviesComponent, { FavoriteMovies } from './favorite-movies';
 import { UpdateUser } from "./update-user";
 
 export const ProfileView = ({localUser, movies, token}) => {
@@ -24,6 +24,13 @@ export const ProfileView = ({localUser, movies, token}) => {
         Password: password,
         FavoriteMovies: user.FavoriteMovies
       };
+
+      const favoriteMoviesList = movies.filter(movie => user.FavoriteMovies.includes(movie._id));
+
+    useEffect(() => {
+        // Fetch user data and update state
+    }, [token, setUser]);
+
       const handleSubmit = (event) => {
         event.preventDefault(event);
         fetch(`https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.Username}`, {
@@ -126,13 +133,8 @@ export const ProfileView = ({localUser, movies, token}) => {
            </Card.Body>
            </Card>      
     </Row>
-    <Row>
-        <Col className="mb-5" xs={12} md={12}>
-            {
-                FavoriteMovies && (<FavoriteMovies user={user} FavoriteMovies={FavoriteMovies} />)
-            }
-        </Col>
-      </Row>
+    <FavoriteMoviesComponent user={user} FavoriteMovies={favoriteMoviesList} />
+
       </Container>
   )
 }
