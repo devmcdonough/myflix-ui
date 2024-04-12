@@ -3,20 +3,18 @@ import { UserInfo } from './user-info'
 import { Button, Card, Container} from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import FavoriteMoviesComponent, { FavoriteMovies } from './favorite-movies';
+import FavoriteMovies from './favorite-movies';
 import { UpdateUser } from "./update-user";
 
-export const ProfileView = ({localUser, movies, token}) => {
+export const ProfileView = ({ movies, token, user, setUser, isFavorite }) => {
     const storedUser = JSON.parse(localStorage.getItem("user")) || {};
     const [username, setUsername]= useState(storedUser.username || "");
     const [email, setEmail] = useState(storedUser.email || "");
     const [password, setPassword]= useState(storedUser.password || "");
-    const [movies, setMovies] = useState([]);
     const [birthday, setBirthday] = useState(storedUser.birthday || "");
-    const [user, setUser]= useState({ FavoriteMovies: [] });
     const [isMoviesLoading, setIsMoviesLoading] = useState(true);
-    const FavoriteMovies = user && Array.isArray(user.FavoriteMovies)
-  ? movies.filter((m) => user.FavoriteMovies.includes(m.title))
+    const favoriteMovies = user && Array.isArray(user.FavoriteMovies)
+  ? movies.filter((m) => user.FavoriteMovies.includes(m.id))
   : [];
 
   useEffect(() => {
@@ -24,9 +22,12 @@ export const ProfileView = ({localUser, movies, token}) => {
     const fetchMovies = async () => {
       setIsMoviesLoading(true); // Start loading
       try {
-        const response = await fetch('https://mymovielibrary-905482f59fde.herokuapp.com/movies/');
+        const response = await fetch('https://mymovielibrary-905482f59fde.herokuapp.com/movies/',{
+          headers: { Authorization: `Bearer ${token}`},
+      } );
         const data = await response.json();
         setMovies(data); // Assume you have a setState action for movies
+        console.log("This is the data", data);
         setIsMoviesLoading(false); // Loading is done
       } catch (error) {
         console.error("Failed to fetch movies:", error);
@@ -35,7 +36,7 @@ export const ProfileView = ({localUser, movies, token}) => {
     };
   
     fetchMovies();
-  }, []);
+  }, [token]);
 
     const userData = {
         Username: username,
@@ -44,9 +45,6 @@ export const ProfileView = ({localUser, movies, token}) => {
         Password: password,
         FavoriteMovies: user.FavoriteMovies
       };
-
-      const favoriteMoviesList = movies.filter(movie => user.FavoriteMovies.includes(movie._id));
-      console.log(favoriteMoviesList);
 
     useEffect(() => {
         // Fetch user data and update state
@@ -158,7 +156,7 @@ export const ProfileView = ({localUser, movies, token}) => {
            </Card.Body>
            </Card>      
     </Row>
-    <FavoriteMoviesComponent user={user} FavoriteMovies={favoriteMoviesList} />
+    <FavoriteMovies user={user} setUser={setUser} favoriteMovies={favoriteMovies} token={token} isFavorite={isFavorite} />
 </>
     )}
       </Container>

@@ -92,3 +92,5 @@ export const SignUpView = () => {
         </Card>
     )
 }
+
+export default SignUpView;

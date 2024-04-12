@@ -21,18 +21,23 @@ export const MainView = () => {
       if (!token) {
           return;
       }
+      console.log("Token used for request:", token); // Confirm the token is correct
+
       fetch("https://mymovielibrary-905482f59fde.herokuapp.com/movies", {
           headers: { Authorization: `Bearer ${token}`},
       })
       .then((response) => {
+        console.log("Response Status:", response.status); // Log the response status
+        console.log("Response Headers:", response.headers); // Optionally log headers for more insight
+
           if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
           }
           return response.json();
       })
       .then((data) => {
-          console.log(data);
-          const moviesFromApi = data.map((movie) => {
+        console.log("Data received:", data); // See what data is actually returned
+        const moviesFromApi = data.map((movie) => {
               return { 
                   id: movie._id,
                   title: movie.Title,
@@ -48,6 +53,7 @@ export const MainView = () => {
                   imagepath: movie.ImagePath
           }});
           setMovies(moviesFromApi);
+          console.log("Fetching from URL:", "https://mymovielibrary-905482f59fde.herokuapp.com/movies");
       }).catch(error => console.error("Fetching error:", error));
   }, [token]);
   
@@ -58,7 +64,7 @@ return (
       <Row className="justify-content-md-center">
         <Routes>
           <Route
-            path="/signup"
+            path="/login"
             element={
               <>
                 {user ? (
@@ -137,9 +143,10 @@ return (
                 ) : (
                   <Col md={8}>
                     <ProfileView
-                      localUser={user}
+                      user={user}
                       movies={movies}
                       token={token}
+                      setUser={setUser}
                     />
                   </Col>
                 )}

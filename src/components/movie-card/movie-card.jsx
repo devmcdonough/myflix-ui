@@ -1,105 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 
+export const MovieCard = ({ movie, user, setUser, token }) => {
+    // Determine if the movie is a favorite based on the user's favorite movies list
+    const [localIsFavorite, setLocalIsFavorite] = useState(user?.FavoriteMovies.includes(movie.id));
 
-export const MovieCard = ({ movie, isFavorite, user, setUser, token }) => {
+    // Effect to update localIsFavorite when user's favorite movies change
+    useEffect(() => {
+        setLocalIsFavorite(user?.FavoriteMovies.includes(movie.id));
+    }, [user, movie.id]);
 
-    const [addTitle, setAddTitle] = useState("");
-    const [removeTitle, setRemoveTitle] = useState("");
+    const toggleFavorite = async () => {
+        const method = localIsFavorite ? "DELETE" : "POST";
+        setLocalIsFavorite(!localIsFavorite); // Optimistically toggle the favorite status
 
-
-    // useEffect(() => {
-    //     if (!user || !token) {
-    //         return;
-    //     }   
-    //             }, [addTitle, removeTitle, token]);
-
-    const addToFavorites = () => {
-        console.log("Before adding to favorites:", { isFavorite, FavoriteMovies: user.FavoriteMovies });
-
-        const username = user.username;
-        console.log('User in MovieCard:', user);
-
-        fetch(
-            `https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.Username}/movies/${encodeURIComponent(movie.id)}`,
-            {
-                method: "POST",
+        try {
+            const response = await fetch(`https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.Username}/movies/${encodeURIComponent(movie.id)}`, {
+                method: method,
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-            }
-        )
-            .then((response) => {
-                if (!response.ok) {
-                    throw Error("Failed to add to favorites");
-                }
-                alert("Movie added to favorites!");
-                setAddTitle("");
-                return response.json();
-            })
-            .then((updatedUser) => {
-                console.log(updatedUser);
-                if (updatedUser) {
-                    localStorage.setItem("user", JSON.stringify(updatedUser));
-                    setUser(updatedUser);
-                    console.log("After adding to favorites:", { isFavorite, FavoriteMovies: user.FavoriteMovies });
-
-                }
-
-            })
-            .catch((error) => {
-                console.error(error);
             });
-    }
+            if (!response.ok) throw new Error(`Failed to ${localIsFavorite ? "remove from" : "add to"} favorites`);
 
-    const removeFromFavorites = () => {
-        fetch(
-            `https://mymovielibrary-905482f59fde.herokuapp.com/users/${user.Username}/movies/${encodeURIComponent(movie.id)}`,
-            {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                }
-            }
-        )
-            .then((response) => {
-                if (!response.ok) {
-                    throw Error("Could not remove movie");
-                }
-                alert("Movie removed from favorites");
-                setRemoveTitle("");
-                return response.json();
-            })
-            .then((updatedUser) => {
-                if (updatedUser) {
-                    localStorage.setItem("user", JSON.stringify(updatedUser));
-                    setUser(updatedUser);
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
-    if (addTitle) {
-        addToFavorites();
-    }
-    if (removeTitle) {
-        removeFromFavorites();
-    }
-
-    const handleAddToFavorites = () => {
-        console.log(`Adding ${movie.id} to favorites`)
-        setAddTitle(movie.id);
-    };
-
-    const handleRemoveFromFavorites = () => {
-        console.log(`Removing ${movie.id} from favorites`)
-        setRemoveTitle(movie.id);
+            const updatedUser = await response.json();
+            setUser(updatedUser);  // Update global user state
+            localStorage.setItem("user", JSON.stringify(updatedUser));
+        } catch (error) {
+            setLocalIsFavorite(!localIsFavorite);  // Revert optimistic update on error
+            console.error("Failed to update favorites:", error);
+        }
     };
 
     return (
@@ -109,19 +43,11 @@ export const MovieCard = ({ movie, isFavorite, user, setUser, token }) => {
                 <Card.Title>{movie.title}</Card.Title>
                 <Card.Text>{movie.director.Name}</Card.Text>
                 <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
-                    <Button variant="link">
-                        Open
-                    </Button>
+                    <Button variant="link">Open</Button>
                 </Link>
-                {isFavorite ? (
-                    <Button variant="primary" onClick={removeFromFavorites}>
-                        Remove from Favorites
-                    </Button>
-                ) : (
-                    <Button variant="primary" onClick={addToFavorites}>
-                        Add to Favorites
-                    </Button>
-                )}
+                <Button variant="primary" onClick={toggleFavorite}>
+                    {localIsFavorite ? "Remove from Favorites" : "Add to Favorites"}
+                </Button>
             </Card.Body>
         </Card>
     );
@@ -139,7 +65,7 @@ MovieCard.propTypes = {
         imagepath: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
     }),
-    isFavorite: PropTypes.bool,
-    user: PropTypes.object,
+    user: PropTypes.object.isRequired,
     setUser: PropTypes.func.isRequired,
+    token: PropTypes.string.isRequired,
 };
