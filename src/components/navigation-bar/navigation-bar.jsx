@@ -13,7 +13,7 @@ return (
                 <Nav className="me-auto">
                 {!user && (
                     <>
-                    <Nav.Link as={Link} to="/login">
+                    <Nav.Link as={Link} to="/login-signup">
                         Login
                     </Nav.Link>
                     <Nav.Link as={Link} to="/signup">

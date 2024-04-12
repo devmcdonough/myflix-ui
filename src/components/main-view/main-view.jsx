@@ -8,6 +8,7 @@ import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { ProfileView } from "../profile-view/profile-view";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { useNavigate } from 'react-router-dom';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 export const MainView = () => {
@@ -16,6 +17,7 @@ export const MainView = () => {
     const [movies, setMovies] = useState([]);
     const [user, setUser] = useState(storedUser ? storedUser : null);
     const [token, setToken] = useState(storedToken ? storedToken : null);
+    
 
     useEffect(() => {
       if (!token) {
@@ -61,38 +63,21 @@ export const MainView = () => {
 return (
     <BrowserRouter>
     <NavigationBar user={user} onLoggedOut={() => setUser(null)} />
-      <Row className="justify-content-md-center">
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              <>
-                {user ? (
-                  <Navigate to="/" />
-                ) : (
-                  <Col md={5}>
-                    <SignUpView />
-                  </Col>
-                )}
-              </>
-
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <>
-                {user ? (
-                  <Navigate to="/" />
-                ) : (
-                  <Col md={5}>
-                    <LoginView onLoggedIn={(user) => setUser(user)} />
-                  </Col>
-                )}
-              </>
-
-            }
-          />
+    <Row className="justify-content-md-center">
+                <Routes>
+                    <Route path="/login-signup" element={
+                        <Row>
+                            <Col md={6}>
+                                <LoginView onLoggedIn={(user, token) => {
+                                    setUser(user);
+                                    setToken(token);
+                                }} />
+                            </Col>
+                            <Col md={6}>
+                                <SignUpView />
+                            </Col>
+                        </Row>
+                    } />
           <Route
             path="/movies/:movieId"
             element={
