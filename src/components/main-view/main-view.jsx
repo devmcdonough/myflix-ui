@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setMovies } from "../../redux/reducers/movies";
+import { setUser } from "../../redux/reducers/user/user";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
@@ -14,10 +17,11 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 export const MainView = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const storedToken = localStorage.getItem("token");
-    const [movies, setMovies] = useState([]);
-    const [user, setUser] = useState(storedUser ? storedUser : null);
+    const movies = useSelector((state) => state.movies);
+    const user = useSelector((state) => state.user);
     const [token, setToken] = useState(storedToken ? storedToken : null);
     
+  const dispatch = useDispatch();
 
     useEffect(() => {
       if (!token) {
@@ -54,7 +58,7 @@ export const MainView = () => {
               },
                   imagepath: movie.ImagePath
           }});
-          setMovies(moviesFromApi);
+          dispatch(setMovies(moviesFromApi));
           console.log("Fetching from URL:", "https://mymovielibrary-905482f59fde.herokuapp.com/movies");
       }).catch(error => console.error("Fetching error:", error));
   }, [token]);
@@ -88,7 +92,7 @@ return (
                   <Col>The list is empty!</Col>
                 ) : (
                   <Col md={8}>
-                    <MovieView movies={movies} />
+                    <MovieView />
                   </Col>
                 )}
               </>

@@ -8,12 +8,14 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useSelector } from "react-redux";
 
-export const MovieView = ({ movies, isFavorite }) => {
+export const MovieView = ({ isFavorite }) => {
     const storedToken = localStorage.getItem("token");
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const [addTitle, setAddTitle] = useState("");
     const [removeTitle, setRemoveTitle] = useState("");
+    const movies = useSelector((state) => state.movies);
 
     const { movieId } = useParams();
 
