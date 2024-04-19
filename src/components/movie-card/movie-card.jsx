@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
+import { BsHeartFill, BsHeart } from 'react-icons/bs';
+import './movie-card.scss';
+
 
 export const MovieCard = ({ movie, user, setUser, token }) => {
     // Determine if the movie is a favorite based on the user's favorite movies list
@@ -45,8 +48,12 @@ export const MovieCard = ({ movie, user, setUser, token }) => {
                 <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
                     <Button variant="link">Open</Button>
                 </Link>
-                <Button variant="primary" onClick={toggleFavorite}>
-                    {localIsFavorite ? "Remove from Favorites" : "Add to Favorites"}
+                <Button 
+                variant="outline-danger"
+                 onClick={toggleFavorite}
+                 className="favorite-button">
+                    {localIsFavorite ? <BsHeartFill className='Heart' /> : <BsHeart />}
+                    {localIsFavorite ? " Remove from Favorites" : " Add to Favorites"}
                 </Button>
             </Card.Body>
         </Card>

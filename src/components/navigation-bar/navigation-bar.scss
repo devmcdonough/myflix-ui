@@ -1,0 +1,12 @@
+.search-input {
+    padding-right: 48px; /* Make space for the button */
+}
+
+.search-clear-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none; /* Optional: hides the border */
+    background: transparent; /* Optional: makes the background transparent */
+}

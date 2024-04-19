@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import FavoriteMovies from './favorite-movies';
 import { UpdateUser } from "./update-user";
 
-export const ProfileView = ({ movies, token, user, setUser, isFavorite }) => {
+export const ProfileView = ({ movies, setMovies, token, user, setUser, isFavorite }) => {
     const storedUser = JSON.parse(localStorage.getItem("user")) || {};
     const [username, setUsername]= useState(storedUser.username || "");
     const [email, setEmail] = useState(storedUser.email || "");
@@ -17,26 +17,26 @@ export const ProfileView = ({ movies, token, user, setUser, isFavorite }) => {
   ? movies.filter((m) => user.FavoriteMovies.includes(m.id))
   : [];
 
-  useEffect(() => {
-    // Simulate fetching movies data
-    const fetchMovies = async () => {
-      setIsMoviesLoading(true); // Start loading
-      try {
-        const response = await fetch('https://mymovielibrary-905482f59fde.herokuapp.com/movies/',{
-          headers: { Authorization: `Bearer ${token}`},
-      } );
-        const data = await response.json();
-        setMovies(data); // Assume you have a setState action for movies
-        console.log("This is the data", data);
-        setIsMoviesLoading(false); // Loading is done
-      } catch (error) {
-        console.error("Failed to fetch movies:", error);
-        setIsMoviesLoading(false); // Ensure loading is set to false even if there's an error
-      }
-    };
+  // useEffect(() => {
+  //   // Simulate fetching movies data
+  //   const fetchMovies = async () => {
+  //     setIsMoviesLoading(true); // Start loading
+  //     try {
+  //       const response = await fetch('https://mymovielibrary-905482f59fde.herokuapp.com/movies/',{
+  //         headers: { Authorization: `Bearer ${token}`},
+  //     } );
+  //       const data = await response.json();
+  //       setMovies(data); // Assume you have a setState action for movies
+  //       console.log("This is the data", data);
+  //       setIsMoviesLoading(false); // Loading is done
+  //     } catch (error) {
+  //       console.error("Failed to fetch movies:", error);
+  //       setIsMoviesLoading(false); // Ensure loading is set to false even if there's an error
+  //     }
+  //   };
   
-    fetchMovies();
-  }, [token]);
+  //   fetchMovies();
+  // }, [token]);
 
     const userData = {
         Username: username,
@@ -132,10 +132,6 @@ export const ProfileView = ({ movies, token, user, setUser, isFavorite }) => {
 
   return (
     <Container className="mx-1">
-      {isMoviesLoading ? (
-      <div>Loading movies...</div> // Display loading indicator when movies are being fetched
-    ) : (
-      <>
     <Row>
         <Card className="mb-5">
             <Card.Body>
@@ -157,8 +153,7 @@ export const ProfileView = ({ movies, token, user, setUser, isFavorite }) => {
            </Card>      
     </Row>
     <FavoriteMovies user={user} setUser={setUser} favoriteMovies={favoriteMovies} token={token} isFavorite={isFavorite} />
-</>
-    )}
+
       </Container>
   )
 }

@@ -10,6 +10,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useNavigate } from 'react-router-dom';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import { FormControl } from "react-bootstrap/FormControl";
 
 export const MainView = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -17,6 +19,7 @@ export const MainView = () => {
     const [movies, setMovies] = useState([]);
     const [user, setUser] = useState(storedUser ? storedUser : null);
     const [token, setToken] = useState(storedToken ? storedToken : null);
+    const [searchBar, setSearchBar] = useState("");
     
 
     useEffect(() => {
@@ -58,11 +61,26 @@ export const MainView = () => {
           console.log("Fetching from URL:", "https://mymovielibrary-905482f59fde.herokuapp.com/movies");
       }).catch(error => console.error("Fetching error:", error));
   }, [token]);
+
+  const handleSearchBarReset = () => {
+    setSearchBar("");
+  };
+
+  const filteredMovies = movies.filter(
+    (movie) =>
+    searchBar.trim() === "" ||
+    movie.title.toLowerCase().includes(searchBar.toLowerCase())
+  );
   
 
 return (
     <BrowserRouter>
-    <NavigationBar user={user} onLoggedOut={() => setUser(null)} />
+    <NavigationBar user={user} onLoggedOut={() => setUser(null)
+    }
+    searchBar={searchBar}
+    setSearchBar={setSearchBar}
+    handleSearchBarReset={handleSearchBarReset} 
+    />
     <Row className="justify-content-md-center">
                 <Routes>
                     <Route path="/login-signup" element={
@@ -104,7 +122,7 @@ return (
                   <Col>The list is empty!</Col>
                 ) : (
                   <>
-                    {movies.map((movie) => (
+                    {filteredMovies.map((movie) => (
                       <Col className="mb-4" key={movie.id} md={3}>
                         <MovieCard 
                         movie={movie} 
@@ -130,6 +148,7 @@ return (
                     <ProfileView
                       user={user}
                       movies={movies}
+                      setMovies={setMovies}
                       token={token}
                       setUser={setUser}
                     />
