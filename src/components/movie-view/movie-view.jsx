@@ -41,7 +41,7 @@ export const MovieView = ({ movies, isFavorite }) => {
                 <Card.Text>{movie.genre.Name}</Card.Text>
                 <Card.Text>{movie.description}</Card.Text>
                 <Card.Text>{movie.director.Name}</Card.Text>
-                {isFavorite ? (
+                {/* {isFavorite ? (
                     <Button variant="primary" onClick={handleRemoveFromFavorites}>
                         Remove from Favorites
                     </Button>
@@ -49,7 +49,7 @@ export const MovieView = ({ movies, isFavorite }) => {
                     <Button variant="primary" onClick={handleAddToFavorites}>
                         Add to Favorites
                     </Button>
-                )}
+                )} */}
             </Card.Body>
             <Link to={`/`} className="btn btn-secondary">
                 Back

@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { BsHeartFill, BsHeart } from 'react-icons/bs';
 import './movie-card.scss';
 
-
 export const MovieCard = ({ movie, user, setUser, token }) => {
     // Determine if the movie is a favorite based on the user's favorite movies list
     const [localIsFavorite, setLocalIsFavorite] = useState(user?.FavoriteMovies.includes(movie.id));
@@ -41,13 +40,14 @@ export const MovieCard = ({ movie, user, setUser, token }) => {
 
     return (
         <Card>
+            <Link to={`/movies/${encodeURIComponent(movie.id)}`} className='title-text' >
             <Card.Img variant="top" src={movie.imagepath} />
+            </Link>
             <Card.Body>
-                <Card.Title>{movie.title}</Card.Title>
-                <Card.Text>{movie.director.Name}</Card.Text>
-                <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
-                    <Button variant="link">Open</Button>
+                <Link to={`/movies/${encodeURIComponent(movie.id)}`} >
+                <Card.Title className="title-text">{movie.title}</Card.Title>
                 </Link>
+                <Card.Text>{movie.director.Name}</Card.Text>
                 <Button 
                 variant="outline-danger"
                  onClick={toggleFavorite}

@@ -10,3 +10,13 @@
     width: 150px;
     height: auto;
 }
+
+.favorite-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heart {
+    color: red;
+}
