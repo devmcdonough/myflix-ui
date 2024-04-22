@@ -26,14 +26,11 @@ export const MainView = () => {
       if (!token) {
           return;
       }
-      console.log("Token used for request:", token); // Confirm the token is correct
 
       fetch("https://mymovielibrary-905482f59fde.herokuapp.com/movies", {
           headers: { Authorization: `Bearer ${token}`},
       })
       .then((response) => {
-        console.log("Response Status:", response.status); // Log the response status
-        console.log("Response Headers:", response.headers); // Optionally log headers for more insight
 
           if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
@@ -41,7 +38,6 @@ export const MainView = () => {
           return response.json();
       })
       .then((data) => {
-        console.log("Data received:", data); // See what data is actually returned
         const moviesFromApi = data.map((movie) => {
               return { 
                   id: movie._id,
@@ -58,7 +54,6 @@ export const MainView = () => {
                   imagepath: movie.ImagePath
           }});
           setMovies(moviesFromApi);
-          console.log("Fetching from URL:", "https://mymovielibrary-905482f59fde.herokuapp.com/movies");
       }).catch(error => console.error("Fetching error:", error));
   }, [token]);
 

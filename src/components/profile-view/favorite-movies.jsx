@@ -7,7 +7,6 @@ import { useEffect } from "react";
 
 export const FavoriteMovies = ({ user, favoriteMovies, token, setUser, isFavorite }) => {
   useEffect(() => {
-    console.log("Favorite Movies have been updated", favoriteMovies);
 }, [favoriteMovies]);
 
     return ( 

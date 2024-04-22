@@ -124,7 +124,6 @@ export const ProfileView = ({ movies, setMovies, token, user, setUser, isFavorit
         })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Current user data", data);
            setUser(data);
         })
         .catch(error => console.error(error))
