@@ -78,7 +78,7 @@ return (
     />
     <Row className="justify-content-md-center">
                 <Routes>
-                    <Route path="/login-signup" element={
+                    <Route path="/login" element={
                         <Row>
                             <Col md={6}>
                                 <LoginView onLoggedIn={(user, token) => {
@@ -96,7 +96,7 @@ return (
             element={
               <>
                 {!user ? (
-                  <Navigate to="/login-signup" replace />
+                  <Navigate to="/login" replace />
                 ) : movies.length === 0 ? (
                   <Col>The list is empty!</Col>
                 ) : (
@@ -112,7 +112,7 @@ return (
             element={
               <>
                 {!user ? (
-                  <Navigate to="/login-signup" replace />
+                  <Navigate to="/login" replace />
                 ) : movies.length === 0 ? (
                   <Col>The list is empty!</Col>
                 ) : (
@@ -137,7 +137,7 @@ return (
             element={
               <>
                 {!user ? (
-                  <Navigate to="/login-signup" replace />
+                  <Navigate to="/login" replace />
                 ) : (
                   <Col md={8}>
                     <ProfileView
