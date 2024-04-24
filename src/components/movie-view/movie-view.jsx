@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import './movie-view.scss';
 
 export const MovieView = ({ movies, isFavorite }) => {
     const storedToken = localStorage.getItem("token");
@@ -30,30 +31,27 @@ export const MovieView = ({ movies, isFavorite }) => {
 
     return (
 
-        <Card>
-            <Card.Img variant="top" src={movie.imagepath} />
-            <Card.Body>
-                <Row>
-                    <Col>
-                        <Card.Title>{movie.title}</Card.Title>
+        <div className="container mt-4">
+            <Card className="mb-3" style={{ maxWidth: '840px' }}>
+                <Row className="g-0">
+                    <Col md={8}>
+                        <img src={movie.imagepath} className="img-fluid rounded-start" alt={movie.title} />
+                    </Col>
+                    <Col md={4}>
+                        <Card.Body>
+                            <Card.Title>{movie.title}</Card.Title>
+                            <Card.Text>{movie.genre.Name}</Card.Text>
+                            <Card.Text>{movie.description}</Card.Text>
+                            <Card.Text>{movie.director.Name}</Card.Text>
+                            {/* Optional: Uncomment if favorites feature is implemented */}
+                            {/* <Button variant="primary">{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</Button> */}
+                            <Link to="/" className="btn btn-secondary">
+                                Back
+                            </Link>
+                        </Card.Body>
                     </Col>
                 </Row>
-                <Card.Text>{movie.genre.Name}</Card.Text>
-                <Card.Text>{movie.description}</Card.Text>
-                <Card.Text>{movie.director.Name}</Card.Text>
-                {/* {isFavorite ? (
-                    <Button variant="primary" onClick={handleRemoveFromFavorites}>
-                        Remove from Favorites
-                    </Button>
-                ) : (
-                    <Button variant="primary" onClick={handleAddToFavorites}>
-                        Add to Favorites
-                    </Button>
-                )} */}
-            </Card.Body>
-            <Link to={`/`} className="btn btn-secondary">
-                Back
-            </Link>
-        </Card>
+            </Card>
+        </div>
     );
 };

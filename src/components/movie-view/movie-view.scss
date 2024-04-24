@@ -1,22 +1,38 @@
-.back-button { 
-    padding: 4px 12px 4px 12px;
-    color: whitesmoke;
-    background-color: dodgerblue;
-    border: none;
-    border-radius: 4px;
+.movie-view-card {
+    .card-img-container {
+        width: 100%;
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .card-body-container {
+        text-align: left;
+    }
 }
 
-.movie-image {
-    width: 150px;
-    height: auto;
-}
 
-.favorite-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+// .back-button { 
+//     padding: 4px 12px 4px 12px;
+//     color: whitesmoke;
+//     background-color: dodgerblue;
+//     border: none;
+//     border-radius: 4px;
+// }
 
-.heart {
-    color: red;
-}
+// .movie-image {
+//     width: 150px;
+//     height: auto;
+// }
+
+// .favorite-button {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+// }
+
+// .heart {
+//     color: red;
+// }
