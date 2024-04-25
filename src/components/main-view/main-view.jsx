@@ -71,7 +71,11 @@ export const MainView = () => {
 
   return (
     <BrowserRouter>
-      <NavigationBar user={user} onLoggedOut={() => setUser(null)
+      <NavigationBar user={user} onLoggedOut={() => { 
+      setUser(null);
+      setToken(null);
+      localStorage.clear();
+      }
       }
         searchBar={searchBar}
         setSearchBar={setSearchBar}
