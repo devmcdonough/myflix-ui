@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import { useNavigate } from 'react-router-dom';
 
-export const SignUpView = () => {
+export const SignUpView = ({ onLoggedIn }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -12,7 +12,7 @@ export const SignUpView = () => {
     const navigate = useNavigate();
 
     const login = () => {
-        // Perform login after successful signup
+        console.log("Attempting login with", { Username: username, Password: password });
         fetch("https://mymovielibrary-905482f59fde.herokuapp.com/login", {
             method: "POST",
             headers: {
@@ -25,7 +25,8 @@ export const SignUpView = () => {
             if (data.user) {
                 localStorage.setItem("user", JSON.stringify(data.user));
                 localStorage.setItem("token", data.token);
-                navigate('/');  // Navigate to the homepage after login
+                onLoggedIn(data.user, data.token);
+                navigate('/');
             } else {
                 alert("Login after signup failed.");
             }

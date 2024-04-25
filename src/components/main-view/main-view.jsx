@@ -87,7 +87,10 @@ return (
                                 }} />
                             </Col>
                             <Col md={6}>
-                                <SignUpView />
+                                <SignUpView onLoggedIn={(user, token) => {
+                                  setUser(user)
+                                  setToken(token);
+                                }} />
                             </Col>
                         </Row>
                     } />
