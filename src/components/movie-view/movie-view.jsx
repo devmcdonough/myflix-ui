@@ -1,33 +1,21 @@
 import { useParams } from "react-router";
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
 import React from 'react';
-import PropTypes from "prop-types";
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './movie-view.scss';
+import { FavoriteButton } from "../favorite-button/favorite-button";
 
-export const MovieView = ({ movies, isFavorite }) => {
-    const storedToken = localStorage.getItem("token");
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    const [addTitle, setAddTitle] = useState("");
-    const [removeTitle, setRemoveTitle] = useState("");
+export const MovieView = ({ movies, user, setUser, token }) => {
 
     const { movieId } = useParams();
 
         const movie = movies.find((m) => m.id === movieId);
 
         if (!movie) return <div>Movie not found</div>
-
-        const handleAddToFavorites = () => {
-            setAddTitle(movie.id);
-        };
-        const handleRemoveFromFavorites = () => {
-            setRemoveTitle(movie.id);
-        };
 
     return (
 
@@ -43,8 +31,7 @@ export const MovieView = ({ movies, isFavorite }) => {
                             <Card.Text>Dir: {movie.director.Name}</Card.Text>
                             <Card.Text>{movie.genre.Name}</Card.Text>
                             <Card.Text>{movie.description}</Card.Text>
-                            {/* Optional: Uncomment if favorites feature is implemented */}
-                            {/* <Button variant="primary">{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</Button> */}
+                            <FavoriteButton movie={movie} user={user} setUser={setUser} token={token} />
                             <Link to="/" className="btn btn-secondary">
                                 Back
                             </Link>

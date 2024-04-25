@@ -109,7 +109,12 @@ export const MainView = () => {
                   <Col>The list is empty!</Col>
                 ) : (
                   <Col md={8}>
-                    <MovieView movies={movies} />
+                    <MovieView
+                    movie={movie}
+                    user={user}
+                    setUser={setUser}
+                    token={token}
+                    isFavorite={user.FavoriteMovies && user.FavoriteMovies.includes(movie.id)} />
                   </Col>
                 )}
               </>
