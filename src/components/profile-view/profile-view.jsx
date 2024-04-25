@@ -8,8 +8,8 @@ import { UpdateUser } from "./update-user";
 
 export const ProfileView = ({ movies, setMovies, token, user, setUser, isFavorite }) => {
     const storedUser = JSON.parse(localStorage.getItem("user")) || {};
-    const [username, setUsername]= useState(storedUser.username || "");
-    const [email, setEmail] = useState(storedUser.email || "");
+    const [username, setUsername]= useState(storedUser.Username || "");
+    const [email, setEmail] = useState(storedUser.Email || "");
     const [password, setPassword]= useState(storedUser.password || "");
     const [birthday, setBirthday] = useState(storedUser.birthday || "");
     const [isMoviesLoading, setIsMoviesLoading] = useState(true);
@@ -47,8 +47,35 @@ export const ProfileView = ({ movies, setMovies, token, user, setUser, isFavorit
       };
 
     useEffect(() => {
-        // Fetch user data and update state
-    }, [token, setUser]);
+      if (!token || !storedUser.Username) {
+        return; // Prevents running the fetch if the token or username isn't available
+    }
+
+    // Define the URL with the stored username to fetch the user details
+    const url = `https://mymovielibrary-905482f59fde.herokuapp.com/users/${storedUser.Username}`;
+
+    fetch(url, {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        setUser(data); // Update the user in the global state
+        console.log(data);  // Check the structure and content of fetched data
+        setUsername(data.Username || "");  // Update local username state
+        setEmail(data.Email || "");        // Update local email state
+        setPassword(data.Password || "");  // Update local password state
+        const formattedBirthday = data.Birthday ? new Date(data.Birthday).toISOString().split('T')[0] : '';
+        setBirthday(formattedBirthday);
+        })
+    .catch(error => {
+        console.error('Failed to fetch user:', error);
+    });
+}, [token, storedUser.Username, setUser]);
 
       const handleSubmit = (event) => {
         event.preventDefault(event);
@@ -136,7 +163,7 @@ export const ProfileView = ({ movies, setMovies, token, user, setUser, isFavorit
             <Card.Body>
                 <Card.Title>My Profile  </Card.Title>
                         {
-                            user && (<UserInfo name ={userData.Username} email={userData.email} />)
+                            user && (<UserInfo name ={userData.Username} email={userData.Email} />)
                         }
             </Card.Body>            
         </Card>

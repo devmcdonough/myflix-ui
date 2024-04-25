@@ -2,12 +2,39 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
+import { useNavigate } from 'react-router-dom';
 
 export const SignUpView = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
+    const navigate = useNavigate();
+
+    const login = () => {
+        // Perform login after successful signup
+        fetch("https://mymovielibrary-905482f59fde.herokuapp.com/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ Username: username, Password: password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.user) {
+                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("token", data.token);
+                navigate('/');  // Navigate to the homepage after login
+            } else {
+                alert("Login after signup failed.");
+            }
+        })
+        .catch(error => {
+            alert("Error logging in after signup: " + error.message);
+        });
+    };
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -27,8 +54,8 @@ export const SignUpView = () => {
             },
         }).then((response) => {
             if (response.ok) {
-                alert("Signup successful");
-                window.location.reload();
+                alert("Signup successful! Please sign in. I'm trying my best here.");
+                login();
             } else {
                 alert("Signup failed");
             }

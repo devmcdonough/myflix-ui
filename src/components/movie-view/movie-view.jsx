@@ -32,7 +32,7 @@ export const MovieView = ({ movies, isFavorite }) => {
     return (
 
         <div className="container mt-4">
-            <Card className="mb-3" style={{ maxWidth: '840px' }}>
+            <Card className="mb-3" style={{ maxWidth: '640px' }}>
                 <Row className="g-0">
                     <Col md={8}>
                         <img src={movie.imagepath} className="img-fluid rounded-start" alt={movie.title} />
@@ -40,9 +40,9 @@ export const MovieView = ({ movies, isFavorite }) => {
                     <Col md={4}>
                         <Card.Body>
                             <Card.Title>{movie.title}</Card.Title>
+                            <Card.Text>Dir: {movie.director.Name}</Card.Text>
                             <Card.Text>{movie.genre.Name}</Card.Text>
                             <Card.Text>{movie.description}</Card.Text>
-                            <Card.Text>{movie.director.Name}</Card.Text>
                             {/* Optional: Uncomment if favorites feature is implemented */}
                             {/* <Button variant="primary">{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</Button> */}
                             <Link to="/" className="btn btn-secondary">

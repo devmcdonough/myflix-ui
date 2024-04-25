@@ -13,7 +13,7 @@ export const UpdateUser = ({userData, handleUpdate, handleSubmit, handleDeregist
                   <Form.Control
                   type="text"
                   minLength={4}
-                  value={userData.username}
+                  value={userData.Username}
                   onChange={(e) => handleUpdate(e)}
                   required
                   />
@@ -25,7 +25,7 @@ export const UpdateUser = ({userData, handleUpdate, handleSubmit, handleDeregist
                   <Form.Control
                   type="password"
                   minLength={8}
-                  value={userData.password}
+                  value={userData.Password}
                   onChange={(e) => handleUpdate(e)}
                   required
                   />
@@ -34,7 +34,7 @@ export const UpdateUser = ({userData, handleUpdate, handleSubmit, handleDeregist
               <Form.Label> Email: </Form.Label>
               <Form.Control
                   type="email"
-                  value={userData.email}
+                  value={userData.Email}
                   onChange={(e) => handleUpdate(e)}
                   required
               />
@@ -43,7 +43,7 @@ export const UpdateUser = ({userData, handleUpdate, handleSubmit, handleDeregist
                   <Form.Label>Birthday:</Form.Label>
                   <Form.Control
                   type="date"
-                  value={userData.birthDay}
+                  value={userData.Birthday}
                   onChange={(e) => handleUpdate(e)}
                   required
                   />

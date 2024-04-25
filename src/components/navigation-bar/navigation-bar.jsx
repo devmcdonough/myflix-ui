@@ -14,8 +14,7 @@ export const NavigationBar = ({ user, onLoggedOut, searchBar, setSearchBar, hand
                     <Nav className="me-auto">
                         {!user && (
                             <>
-                                <Nav.Link as={Link} to="/login-signup">Login</Nav.Link>
-                                <Nav.Link as={Link} to="/signup">Movies</Nav.Link>
+                                <Nav.Link as={Link} to="/login">Login</Nav.Link>
                             </>
                         )}
                         {user && (
@@ -29,23 +28,25 @@ export const NavigationBar = ({ user, onLoggedOut, searchBar, setSearchBar, hand
                             </>
                         )}
                     </Nav>
-                    {/* Separate Nav for the search form */}
-                    <Nav className="ms-auto">
-                        <Form inline className="position-relative">
-                            <Form.Control
-                                type="search"
-                                value={searchBar}
-                                onChange={(e) => setSearchBar(e.target.value)}
-                                placeholder="Search..."
-                                className="search-input"
-                            />
-                            {searchBar && (
-                                <Button variant="outline-secondary" className="search-clear-btn" onClick={handleSearchBarReset}>
-                                    ×
-                                </Button>
-                            )}
-                        </Form>
-                    </Nav>
+                    {/* Conditional rendering for the search form */}
+                    {user && (
+                        <Nav className="ms-auto">
+                            <Form inline className="position-relative">
+                                <Form.Control
+                                    type="search"
+                                    value={searchBar}
+                                    onChange={(e) => setSearchBar(e.target.value)}
+                                    placeholder="Search..."
+                                    className="search-input"
+                                />
+                                {searchBar && (
+                                    <Button variant="outline-secondary" className="search-clear-btn" onClick={handleSearchBarReset}>
+                                        ×
+                                    </Button>
+                                )}
+                            </Form>
+                        </Nav>
+                    )}
                 </Navbar.Collapse>
             </Container>
         </Navbar>
