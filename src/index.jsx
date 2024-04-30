@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 
 // Import statemtn to indicate that you need to bundle './index.scss'
-import { MainView } from './components/main-view/main-view';
+import { MainView } from './components/main';
 import { Container } from 'react-bootstrap';
 
 import "./index.scss";

@@ -1,42 +1,19 @@
 import { useEffect, useState } from "react";
 import { UserInfo } from './user-info'
-import { Button, Card, Container} from 'react-bootstrap';
+import { Card, Container} from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import FavoriteMovies from './favorite-movies';
 import { UpdateUser } from "./update-user";
 
-export const ProfileView = ({ movies, setMovies, token, user, setUser, isFavorite }) => {
+export const ProfileView = ({ movies, token, user, setUser }) => {
     const storedUser = JSON.parse(localStorage.getItem("user")) || {};
     const [username, setUsername]= useState(storedUser.Username || "");
     const [email, setEmail] = useState(storedUser.Email || "");
     const [password, setPassword]= useState(storedUser.password || "");
     const [birthday, setBirthday] = useState(storedUser.birthday || "");
-    const [isMoviesLoading, setIsMoviesLoading] = useState(true);
     const favoriteMovies = user && Array.isArray(user.FavoriteMovies)
   ? movies.filter((m) => user.FavoriteMovies.includes(m.id))
   : [];
-
-  // useEffect(() => {
-  //   // Simulate fetching movies data
-  //   const fetchMovies = async () => {
-  //     setIsMoviesLoading(true); // Start loading
-  //     try {
-  //       const response = await fetch('https://mymovielibrary-905482f59fde.herokuapp.com/movies/',{
-  //         headers: { Authorization: `Bearer ${token}`},
-  //     } );
-  //       const data = await response.json();
-  //       setMovies(data); // Assume you have a setState action for movies
-  //       console.log("This is the data", data);
-  //       setIsMoviesLoading(false); // Loading is done
-  //     } catch (error) {
-  //       console.error("Failed to fetch movies:", error);
-  //       setIsMoviesLoading(false); // Ensure loading is set to false even if there's an error
-  //     }
-  //   };
-  
-  //   fetchMovies();
-  // }, [token]);
 
     const userData = {
         Username: username,
@@ -178,7 +155,7 @@ export const ProfileView = ({ movies, setMovies, token, user, setUser, isFavorit
            </Card.Body>
            </Card>      
     </Row>
-    <FavoriteMovies user={user} setUser={setUser} favoriteMovies={favoriteMovies} token={token} isFavorite={isFavorite} />
+    <FavoriteMovies user={user} setUser={setUser} favoriteMovies={favoriteMovies} token={token} />
 
       </Container>
   )

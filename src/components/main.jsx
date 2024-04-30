@@ -1,17 +1,14 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { MovieCard } from "../movie-card/movie-card";
-import { MovieView } from "../movie-view/movie-view";
-import { LoginView } from "../login-view/login-view";
-import { SignUpView } from "../signup-view/signup-view";
-import { NavigationBar } from "../navigation-bar/navigation-bar";
-import { ProfileView } from "../profile-view/profile-view";
+import { MovieCard } from "./shared/movie-card/movie-card";
+import { MovieView } from "./views/movie-view/movie-view";
+import { LoginView } from "./views/login-view/login-view";
+import { SignUpView } from "./views/signup-view/signup-view";
+import { NavigationBar } from "./shared/navigation-bar/navigation-bar";
+import { ProfileView } from "./views/profile-view/profile-view";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { useNavigate } from 'react-router-dom';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import { FormControl } from "react-bootstrap/FormControl";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -20,7 +17,6 @@ export const MainView = () => {
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [searchBar, setSearchBar] = useState("");
-
 
   useEffect(() => {
     if (!token) {
@@ -110,11 +106,11 @@ export const MainView = () => {
                 ) : (
                   <Col md={8}>
                     <MovieView
-                    movie={movie}
+                    movies={movies}
                     user={user}
                     setUser={setUser}
                     token={token}
-                    isFavorite={user.FavoriteMovies && user.FavoriteMovies.includes(movie.id)} />
+                    />
                   </Col>
                 )}
               </>

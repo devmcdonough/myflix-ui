@@ -7,15 +7,15 @@ import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './movie-view.scss';
-import { FavoriteButton } from "../favorite-button/favorite-button";
+import { FavoriteButton } from "../../shared/favorite-button/favorite-button";
 
 export const MovieView = ({ movies, user, setUser, token }) => {
 
     const { movieId } = useParams();
 
         const movie = movies.find((m) => m.id === movieId);
+        if (!movies) return <div>Movie not found</div>;
 
-        if (!movie) return <div>Movie not found</div>
 
     return (
 

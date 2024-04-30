@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, Row, Figure, Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { MovieCard } from "../movie-card/movie-card";
+import { MovieCard } from "../../shared/movie-card/movie-card";
 import { useEffect } from "react";
 
 
