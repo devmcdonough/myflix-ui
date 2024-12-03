@@ -74,7 +74,7 @@ Client-side development has become crucial in modern web applications. Unlike tr
 - The application may use React Redux for state management of at least one feature (i.e., filtering movies)
 
 ## Installation
-1. **Clone the repository**: git clone https://github.com/yourusername/myflix-client.git
+1. **Clone the repository**: git clone https://github.com/devmcdonough/myflix-ui
 2. **Navigate to the project directory**: cd myflix-client
 3. **Install dependencies**:
 "bcrypt": "^5.1.1",
