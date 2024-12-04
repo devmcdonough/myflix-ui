@@ -4,7 +4,7 @@ import './navigation-bar.scss';
 
 export const NavigationBar = ({ user, onLoggedOut, searchBar, setSearchBar, handleSearchBarReset }) => {
     return (
-        <Navbar bg="light" expand="lg" className='align-items-center'>
+        <Navbar bg="light" expand="lg" className='align-items-center custom-navbar'>
             <Container>
                 <Navbar.Brand as={Link} to="/">
                     Movie App

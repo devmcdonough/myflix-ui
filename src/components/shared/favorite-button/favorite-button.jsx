@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BsHeartFill, BsHeart } from 'react-icons/bs';
 import Button from 'react-bootstrap/Button';
+import './favorite-button.scss'
 
 export const FavoriteButton = ({ user, token, movie, setUser }) => {
 
@@ -40,7 +41,7 @@ export const FavoriteButton = ({ user, token, movie, setUser }) => {
             variant="outline-danger"
             onClick={toggleFavorite}
             className="favorite-button">
-            {localIsFavorite ? <BsHeartFill className='Heart' /> : <BsHeart />}
+            {localIsFavorite ? <BsHeartFill className='heart' /> : <BsHeart className='heart' />}
             {localIsFavorite ? " Remove from Favorites" : " Add to Favorites"}
         </Button>
     )
